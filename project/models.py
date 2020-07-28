@@ -1,4 +1,4 @@
-from project import lm, db
+from project import login_manager, db
 from flask_login import UserMixin
 from datetime import datetime
 
@@ -6,9 +6,11 @@ from datetime import datetime
 
 #   ----- UZIVATEL -----
 
-@lm.user_loader
+
+@login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id)) 
+    return User.get(user_id)
+
 
 # pouzivatel
 class User(db.Model, UserMixin):
@@ -22,6 +24,8 @@ class User(db.Model, UserMixin):
 
     orders = db.relationship("Order", backref="ordered_items", lazy=True)
 
+    address_id = db.Column(db.Integer, db.ForeignKey("address.id"), nullable=True)  #adresa nie je povinna pri registracii uzivatela
+
     def __repr__(self):
         return f"User {self.username}, email={self.email}, picture={self.picture}"
 
@@ -34,8 +38,15 @@ class Address(db.Model):
     street = db.Column(db.String(80), unique=True, nullable=False)
     house_number = db.Column(db.Integer, nullable=False)
 
+    inhabitants = db.relationship("User", backref="users", lazy=True)
 
+#   ----- UZIVATELSKE VECI -----
 
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
 
 
 #   ------ OBCHOD ------
@@ -66,7 +77,8 @@ class Book(db.Model):
     pages_num = db.Column(db.Integer, nullable=False)
     isbn = db.Column(db.String(30), nullable=False)
     year_published = db.Column(db.Integer)
-    publisher = db.Column(db.String(100), nullable=False)   # publisher model ?
+    publisher = db.Column(db.String(100), nullable=False)   
+    picture = db.Column(db.String(20), nullable=False, default="Default.png")   #obrazok pre knihu
     language = db.Column(db.String(40), nullable=False, default="Slovenský")
 
     author_id = db.Column(db.Integer, db.ForeignKey("author.id"), nullable=False)
@@ -82,6 +94,10 @@ class Order(db.Model):
 
     buyer_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     books = db.relationship("Book", secondary=transactions , backref=db.backref("orders", lazy="dynamic"))
+
+    def __repr__(self):
+        return f"Order num:{self.number}"
+
 
 
 

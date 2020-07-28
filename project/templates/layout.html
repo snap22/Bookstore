@@ -3,26 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">   <!-- social media icons -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"> <!-- Bootstrap -->
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     <title>Bookstore - {{ title }}</title>
 </head>
 <body>
     <!-- Navigation bar -->
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand text-warning" href="#">
-            <!-- <img src="{{ url_for('static', filename='pictures/main/books-2.png') }}" alt="books icon" width="30" height="30"> -->
-            <!-- ToDo ICON  -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+        <a class="navbar-brand text-warning ml-3" href="{{ url_for('main.home') }}">
+            <span class="fa fa-book"></span>
             BookStore
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <div class="navbar-nav mr-auto"> <!-- mr-auto da na lavu stranu tieto linkz  --> 
-                <a class="nav-item nav-link text-light" href="#">Knihy</a>
-                <a class="nav-item nav-link text-light" href="#">Kontakt</a>
+            <div class="navbar-nav mr-auto "> <!-- mr-auto da na lavu stranu tieto linkz  --> 
+                
+                <!-- Possible Dropdown pre zanre -->
+                <a class="nav-item nav-link text-light ml-1" href="#">Knihy</a>
+
+                <a class="nav-item nav-link text-light" href="{{ url_for('main.contact') }}">Kontakt</a>
                 <a class="nav-item nav-link text-light" href="#">Pomoc</a>
 
                 
@@ -39,16 +42,25 @@
 
 
             <!-- Zmenia sa linky v zavislosti od toho či je uzivatel prihlaseny -->
-            <div class="navbar-nav">
-                <a class="nav-item nav-link text-light" href="#">Prihlásiť sa</a>
-            </div>
+            {% if current_user.is_authenticated %}
+                <div class="navbar-nav ml-2">
+                    <a class="nav-item nav-link text-light" href="#">
+                        <span class="fa fa-user-circle-o"></span>   Môj účet   
+                    </a>
+                </div>
+            {% else %}
+                <div class="navbar-nav ml-2">
+                    <a class="nav-item nav-link text-light" href="#">
+                        <span class="fa fa-user-circle-o"></span>   Prihlásiť sa  
+                    </a>
+                </div>
+            {% endif %}
 
             <!-- Dostupné aj ked uživatel nie je prihlaseny -->
-            <div class="navbar-nav">
+            <div class="navbar-nav mr-3 ml-2">
                 <a class="nav-item nav-link text-light" href="#">
-                    <!-- <img src="{{ url_for('static', filename='pictures/main/books-2.png') }}" alt="books icon" width="30" height="30"> -->
-                    <!-- ToDo ICON -->
-                     Košík 
+                    <span class="fa fa-shopping-cart mr-sm-1"> </span>
+                    Košík 
                 </a>
             </div>
           
@@ -57,6 +69,8 @@
 
     <!-- Content of the page -->
 
+
+
     
     <div class="content">
         {% block content %}
@@ -64,6 +78,102 @@
     </div>
     
     
+    
+
+
+    <!-- Footer -->
+    <footer class="page-footer bg-dark pt-3 pb-3 mt-5">
+        
+        <div class="container">
+
+            <!-- Info -->
+            <div class="row">
+                <div col-sm-4>
+                    <div class="text-white">
+                        <p class="font-weight-bold h2">
+                            BookStore
+                        </p>
+                         
+                         <p class=" ">
+                            Najväčšie internetové kníhkupectvo
+                         </p>
+                         <p class="fa fa-copyright small mb-1 mt-auto">
+                            Copyright 2020
+                         </p>
+                    </div>
+                </div>
+            <div class="col-sm-1">
+
+            </div> 
+             
+            <!-- ODKAZY  -->
+            <div class="col-sm-2 text-white small ">
+                <ul class="list-unstyled ">
+                    <li class="border-bottom h6">
+                        ODKAZY
+                    </li>
+
+                    <li class="">
+                        <a href="{{ url_for('main.about') }}" class="text-white text-decoration-none"> O Nás  </a>
+                    </li>
+
+                    <li class="">
+                        <a href="{{ url_for('main.contact') }}" class="text-white text-decoration-none"> Kontakty </a>
+                    </li>
+
+                    <li class="">
+                        <a href="#" class="text-white text-decoration-none"> Reklamačný poriadok </a>
+                    </li>
+
+                    <li class="">
+                        <a href="#" class="text-white text-decoration-none"> Obchodné podmienky </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-sm-1">
+
+            </div>
+
+
+            <!-- Social Page Buttons -->
+
+            <div class="col-sm-3 ml-auto mt-auto">
+                <div>
+                    <ul class="list-unstyled list-inline m-2">
+
+                        <li class="list-inline-item">
+                            <a  href="#" class="text-white">
+                                <i class="fa fa-facebook fa-3x">  </i>
+                            </a>
+                        </li>
+
+                        <li class="list-inline-item m-2">
+                            <a  href="#" class="text-white">
+                                <i class="fa fa-twitter fa-3x">  </i>
+                            </a>
+                        </li>
+
+                        <li class="list-inline-item m-2">
+                            <a  href="#" class="text-white">
+                                <i class="fa fa-instagram fa-3x">  </i>
+                            </a>
+                        </li>
+                        
+                        
+                    </ul>
+                </div>
+            </div>
+            </div>
+
+            </div>  <!-- end of row -->
+
+            
+            
+
+    </footer>
+    
+
     <!-- Bootstrap scripts  -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
