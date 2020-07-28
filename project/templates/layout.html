@@ -8,6 +8,61 @@
     <title>Bookstore - {{ title }}</title>
 </head>
 <body>
+    <!-- Navigation bar -->
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand text-warning" href="#">
+            <!-- <img src="{{ url_for('static', filename='pictures/main/books-2.png') }}" alt="books icon" width="30" height="30"> -->
+            <!-- ToDo ICON  -->
+            BookStore
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="navbar-nav mr-auto"> <!-- mr-auto da na lavu stranu tieto linkz  --> 
+                <a class="nav-item nav-link text-light" href="#">Knihy</a>
+                <a class="nav-item nav-link text-light" href="#">Kontakt</a>
+                <a class="nav-item nav-link text-light" href="#">Pomoc</a>
+
+                
+               
+            </div>
+             
+            <!-- Search bar -->
+            <div class="navbar-nav mr-3">
+                <form class="form-inline">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Názov knihy" aria-label="Search">
+                    <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Hľadať</button>
+                </form>
+            </div>
+
+
+            <!-- Zmenia sa linky v zavislosti od toho či je uzivatel prihlaseny -->
+            <div class="navbar-nav">
+                <a class="nav-item nav-link text-light" href="#">Prihlásiť sa</a>
+            </div>
+
+            <!-- Dostupné aj ked uživatel nie je prihlaseny -->
+            <div class="navbar-nav">
+                <a class="nav-item nav-link text-light" href="#">
+                    <!-- <img src="{{ url_for('static', filename='pictures/main/books-2.png') }}" alt="books icon" width="30" height="30"> -->
+                    <!-- ToDo ICON -->
+                     Košík 
+                </a>
+            </div>
+          
+        </div>
+    </nav>
+
+    <!-- Content of the page -->
+
+    
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+    
     
     <!-- Bootstrap scripts  -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
