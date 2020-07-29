@@ -12,15 +12,20 @@
             {% include "generalForm.html" %}
 
             <div class="border-top mt-3 text-muted ">
-                Už máš účet?
-                <a href="{{ url_for('account.login') }}" class="text-info"> Prihlás sa </a>
+                Ešte nemáš účet? 
+                <a href="{{ url_for('account.register') }}" class="text-info"> Registruj sa </a>
             </div>
         </div>
         
+        
+        
     </div>
+    
+    
+    <div class="row empty pb-5 mt-5"></div>
+    
+    
 
-    
-    
 </div>
 
 {% endblock %}

@@ -1,0 +1,38 @@
+
+<form action="" method="POST">
+    {{ form.hidden_tag() }}
+    <fieldset class="form-group">
+
+        <legend class="border-bottom h3 mb-3">{{ legend }}</legend>
+
+        {% for field in form if field.name != 'csrf_token' %}
+            
+            <div class="form-group">
+                {% if field.type == "SubmitField" %}   <!-- Ak je to button -->
+                    {{ field(class="btn btn-outline-dark") }}
+
+                {% else %} <!-- ak to nie je button -->
+                    {{ field.label(class="form-control-label") }}
+
+                    {% if field.errors %}
+                        {{ field(class="form-control form-control-lg is-invalid") }}
+                        <!-- Vypise vsetky chyby -->
+                        <div class="invalid-feedback">
+                            {% for error in field.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ field(class="form-control form-control-lg") }}
+                    {% endif %}
+
+                {% endif %}
+
+            </div>
+
+        {% endfor %}
+    </fieldset>
+    
+</form>
+
+

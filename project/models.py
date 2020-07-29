@@ -9,7 +9,7 @@ from datetime import datetime
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.get(user_id)
+    return User.query.get(user_id)
 
 
 # pouzivatel
@@ -17,8 +17,8 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(30), unique=True, nullable=False)
     email = db.Column(db.String(130), unique=True, nullable=False)
-    password = db.Column(db.String(60), nullable=False)
-
+    password = db.Column(db.String(60), nullable=False) 
+    #confirmed = db.Column(db.Boolean(), default=False, nullable=False)     #posle sa confirmation email a potom sa nastavi na true
     # link to the picture of the user
     picture = db.Column(db.String(50), nullable=False, default="Default.png")
 

@@ -43,14 +43,24 @@
 
             <!-- Zmenia sa linky v zavislosti od toho či je uzivatel prihlaseny -->
             {% if current_user.is_authenticated %}
-                <div class="navbar-nav ml-2">
-                    <a class="nav-item nav-link text-light" href="#">
-                        <span class="fa fa-user-circle-o"></span>   Môj účet   
-                    </a>
+            
+                <div class="navbar-nav ml-2 dropdown">
+                    
+                        <a class="nav-item nav-link text-light dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="fa fa-user-circle-o mr-sm-1"></span>   {{ current_user.username }} 
+                        </a>
+
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a href="#" class="dropdown-item"> Môj účet </a>
+                            <a href="#" class="dropdown-item"> Moje objednávky </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="{{ url_for('account.logout') }}" class="dropdown-item"> Odhlásiť sa </a>
+                        </div>
+                    
                 </div>
             {% else %}
                 <div class="navbar-nav ml-2">
-                    <a class="nav-item nav-link text-light" href="#">
+                    <a class="nav-item nav-link text-light" href="{{ url_for('account.login') }}">
                         <span class="fa fa-user-circle-o"></span>   Prihlásiť sa  
                     </a>
                 </div>
@@ -67,12 +77,24 @@
         </div>
     </nav>
 
+
+    <!-- Flash messages -->
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{category}} alert-dismissible">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
     <!-- Content of the page -->
 
-
-
     
-    <div class="content">
+    <div class="container">
         {% block content %}
         {% endblock %}
     </div>
