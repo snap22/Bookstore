@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block content %}
+     {% include "generalForm.html" %}
+{% endblock %}
+
+<!-- 
+     title = StringField("Názov knihy", validators=[DataRequired(), Length(2, 200)])
+    price = FloatField("Cena", validators=[DataRequired()])
+    genre = StringField("Žáner", validators=[DataRequired(), Length(2, 200)])
+    isbn = StringField("ISBN", validators=[DataRequired(), Length(2, 30)])
+    pages_num = IntegerField("Počet strán",validators=[DataRequired()])
+    year_published = IntegerField("Rok vydania",validators=[DataRequired()])
+    publisher = StringField("Vydavateľ", validators=[DataRequired(), Length(2, 100)])
+    publisher = TextAreaField("Obsah knihy", validators=[DataRequired()])
+    submit = SubmitField("Pridať knihu")
+ -->

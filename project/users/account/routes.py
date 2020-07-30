@@ -1,8 +1,9 @@
 from flask import Blueprint, redirect, render_template, url_for, request, flash, Markup
 from flask_login import current_user, login_user, logout_user, login_required
 from project.users.account.forms import LoginForm, RegisterForm
-from project.models import User
+from project.models.account import User
 from project import bcrypt, db
+#from project.users.admin import check_admin
 
 account = Blueprint("account", __name__)
 
@@ -35,6 +36,8 @@ def login():
             if user and bcrypt.check_password_hash(user.password, form.password.data):
                 flash(message="Prihlásenie prebehlo úspešne", category="success")
                 login_user(user, remember=True)
+                #check_admin(user)
+
                 return redirect(url_for("main.home"))
             else:
                 flash(message=Markup("Zlé prihlasovacie meno alebo heslo. Ak ste zabudli svoje heslo, obnovte si ho <a href='#' class='alert-link'>tu</a>."), category="danger")
@@ -42,8 +45,9 @@ def login():
         return render_template("users/login.html", title="Prihlásenie", legend="Prihlásiť sa", form=form)
 
 
-@login_required
+
 @account.route("/logout/")
+@login_required
 def logout():
     logout_user()
     return redirect(url_for("main.home"))

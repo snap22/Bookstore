@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError
 from flask_login import current_user
-from project.models import User
+from project.models.account import User
 
 class RegisterForm(FlaskForm):
     username = StringField("Používateľské meno", validators=[DataRequired(message="Toto pole je povinné"), Length(3, 30, message="Vyberte si uživateľské meno ktoré má aspoň 3 a najviac 30 znakov")])

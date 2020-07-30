@@ -3,14 +3,18 @@
     {{ form.hidden_tag() }}
     <fieldset class="form-group">
 
-        <legend class="border-bottom h3 mb-3">{{ legend }}</legend>
+        {% if legend %}
+            <legend class="border-bottom h3 mb-3">{{ legend }}</legend>
+        {% else %}
+            <legend class="border-bottom h3 mb-3">Formulár</legend>
+        {% endif %}
 
         {% for field in form if field.name != 'csrf_token' %}
             
             <div class="form-group">
                 {% if field.type == "SubmitField" %}   <!-- Ak je to button -->
                     {{ field(class="btn btn-outline-dark") }}
-
+                
                 {% else %} <!-- ak to nie je button -->
                     {{ field.label(class="form-control-label") }}
 
@@ -23,7 +27,12 @@
                             {% endfor %}
                         </div>
                     {% else %}
-                        {{ field(class="form-control form-control-lg") }}
+                        {% if field.type == "TextAreaField" %} <!-- Ak je to dlhý text -->
+                            
+                            {{ field(class="form-control form-control-sm", rows=20, cols=20)}}
+                        {% else %}
+                            {{ field(class="form-control form-control-lg ") }}
+                        {% endif %}
                     {% endif %}
 
                 {% endif %}

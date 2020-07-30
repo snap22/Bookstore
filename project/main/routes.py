@@ -1,6 +1,6 @@
-from flask import Blueprint, redirect, url_for, render_template
+from flask import Blueprint, redirect, url_for, render_template, session
 from flask_login import current_user
-from project.models import Post
+import project.models
 
 main = Blueprint("main", __name__)
 
