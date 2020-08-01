@@ -1,17 +1,267 @@
 {% extends "layout.html" %}
 
 {% block content %}
-     {% include "generalForm.html" %}
+     
+
+<div class="mt-5">
+     <form action="" method="POST">
+          {{form.hidden_tag()}}
+          <fieldset class="form-group">   
+               <legend class="border-bottom h3 mb-3">{{ legend }}</legend>
+               
+               <div class="form-row">
+                    <div class="col-5">
+                         <div class="form-group">
+                              {{ form.title.label(class="form-control-label") }}
+                              {% if form.title.errors %}
+                                   {{ form.title(class="form-control form-control-lg is-invalid") }}
+                                   <div class="invalid-feedback">
+                                        {% for error in form.title.errors %}
+                                             <span>{{ error }}</span>
+                                        {% endfor %}
+                                   </div>
+                              {% else %}
+                                   {{ form.title(class="form-control form-control-lg") }}
+                              {% endif %}
+                    
+                         </div>
+                    </div>
+                    
+
+                    <div class="col-5 ml-1">
+                         <div class="form-group">
+                              {{ form.author.label(class="form-control-label") }}
+                              {% if form.author.errors %}
+                                   {{ form.author(class="form-control form-control-lg is-invalid") }}
+                                   <div class="invalid-feedback">
+                                        {% for error in form.author.errors %}
+                                             <span>{{ error }}</span>
+                                        {% endfor %}
+                                   </div>
+                              {% else %}
+                                   {{ form.author(class="form-control form-control-lg") }}
+                              {% endif %}
+                    
+                         </div>
+                    </div>
+
+                    <div class="col">
+                         <div class="form-group">
+                              {{ form.price.label(class="form-control-label") }}
+                              {% if form.price.errors %}
+                                   {{ form.price(class="form-control form-control-lg is-invalid") }}
+                                   <div class="invalid-feedback">
+                                        {% for error in form.price.errors %}
+                                             <span>{{ error }}</span>
+                                        {% endfor %}
+                                   </div>
+                              {% else %}
+                                   {{ form.price(class="form-control form-control-lg") }}
+                              {% endif %}
+                    
+                         </div>
+                    </div>
+               </div> <!-- end row -->
+               
+               <div class="form-row">
+                    <div class="col-4">
+                         <div class="form-group">
+                              {{ form.genre.label(class="form-control-label") }}
+                              {% if form.genre.errors %}
+                                   {{ form.genre(class="form-control is-invalid") }}
+                                   <div class="invalid-feedback">
+                                        {% for error in form.genre.errors %}
+                                             <span>{{ error }}</span>
+                                        {% endfor %}
+                                   </div>
+                              {% else %}
+                                   {{ form.genre(class="form-control") }}
+                              {% endif %}
+                    
+                         </div>
+                    </div>
+
+                    <div class="col-4">
+                         <div class="form-group">
+                              {{ form.publisher.label(class="form-control-label") }}
+                              {% if form.publisher.errors %}
+                                   {{ form.publisher(class="form-control is-invalid") }}
+                                   <div class="invalid-feedback">
+                                        {% for error in form.publisher.errors %}
+                                             <span>{{ error }}</span>
+                                        {% endfor %}
+                                   </div>
+                              {% else %}
+                                   {{ form.publisher(class="form-control") }}
+                              {% endif %}
+                    
+                         </div>
+                    </div>
+
+                    <div class="col-4">
+                         <div class="form-group">
+                              {{ form.year_published.label(class="form-control-label") }}
+                              {% if form.year_published.errors %}
+                                   {{ form.year_published(class="form-control is-invalid") }}
+                                   <div class="invalid-feedback">
+                                        {% for error in form.year_published.errors %}
+                                             <span>{{ error }}</span>
+                                        {% endfor %}
+                                   </div>
+                              {% else %}
+                                   {{ form.year_published(class="form-control") }}
+                              {% endif %}
+                    
+                         </div>
+                    </div>
+               </div>
+
+               <div class="form-row">
+                    <div class="col">
+                         <div class="form-group">
+                              {{ form.isbn.label(class="form-control-label") }}
+                              {% if form.isbn.errors %}
+                                   {{ form.isbn(class="form-control is-invalid") }}
+                                   <div class="invalid-feedback">
+                                        {% for error in form.isbn.errors %}
+                                             <span>{{ error }}</span>
+                                        {% endfor %}
+                                   </div>
+                              {% else %}
+                                   {{ form.isbn(class="form-control") }}
+                              {% endif %}
+                    
+                         </div>
+                    </div>
+                    <div class="col">
+                         <div class="form-group">
+                              {{ form.pages_num.label(class="form-control-label") }}
+                              {% if form.pages_num.errors %}
+                                   {{ form.pages_num(class="form-control is-invalid") }}
+                                   <div class="invalid-feedback">
+                                        {% for error in form.pages_num.errors %}
+                                             <span>{{ error }}</span>
+                                        {% endfor %}
+                                   </div>
+                              {% else %}
+                                   {{ form.pages_num(class="form-control") }}
+                              {% endif %}
+                    
+                         </div>
+                    </div>
+                    <div class="col">
+                         <div class="form-group">
+                              {{ form.language.label(class="form-control-label") }}
+                              {% if form.language.errors %}
+                                   {{ form.language(class="form-control is-invalid") }}
+                                   <div class="invalid-feedback">
+                                        {% for error in form.language.errors %}
+                                             <span>{{ error }}</span>
+                                        {% endfor %}
+                                   </div>
+                              {% else %}
+                                   {{ form.language(class="form-control") }}
+                              {% endif %}
+                    
+                         </div>
+                    </div>
+               </div>
+
+               <div class="form-row">
+                    <div class="col">
+                         <div class="form-group">
+                              {{ form.info.label(class="form-control-label") }}
+                              {% if form.info.errors %}
+                                   {{ form.info(class="form-control form-control-sm is-invalid") }}
+                                   <div class="invalid-feedback">
+                                        {% for error in form.info.errors %}
+                                             <span>{{ error }}</span>
+                                        {% endfor %}
+                                   </div>
+                              {% else %}
+                                   {{ form.info(class="form-control form-control-sm", rows="20") }}
+                              {% endif %}
+                    
+                         </div>
+                    </div>
+
+                   
+               </div>
+
+               <div class="form-row">
+                    {{ form.submit(class="btn btn-outline-dark")}}
+               </div>
+               
+                    
+               
+
+          </fieldset>
+
+     </form>
+</div>
+
 {% endblock %}
 
 <!-- 
-     title = StringField("Názov knihy", validators=[DataRequired(), Length(2, 200)])
+    title = StringField("Názov knihy", validators=[DataRequired(), Length(2, 200)])
+    author = StringField("Autor", validators=[DataRequired()])
     price = FloatField("Cena", validators=[DataRequired()])
     genre = StringField("Žáner", validators=[DataRequired(), Length(2, 200)])
     isbn = StringField("ISBN", validators=[DataRequired(), Length(2, 30)])
     pages_num = IntegerField("Počet strán",validators=[DataRequired()])
     year_published = IntegerField("Rok vydania",validators=[DataRequired()])
     publisher = StringField("Vydavateľ", validators=[DataRequired(), Length(2, 100)])
-    publisher = TextAreaField("Obsah knihy", validators=[DataRequired()])
+    info = TextAreaField("Obsah knihy", validators=[DataRequired()])
     submit = SubmitField("Pridať knihu")
  -->
+
+ <!-- 
+      
+<form action="" method="POST">
+    {{ form.hidden_tag() }}
+    <fieldset class="form-group">
+
+        {% if legend %}
+            <legend class="border-bottom h3 mb-3">{{ legend }}</legend>
+        {% else %}
+            <legend class="border-bottom h3 mb-3">Formulár</legend>
+        {% endif %}
+
+        {% for field in form if field.name != 'csrf_token' %}
+            
+            <div class="form-group">
+                {% if field.type == "SubmitField" %}   
+                {{ field(class="btn btn-outline-dark") }}
+                
+                {% else %} 
+                    {{ field.label(class="form-control-label") }}
+
+                    {% if field.errors %}
+                        {{ field(class="form-control form-control-lg is-invalid") }}
+                        
+                        <div class="invalid-feedback">
+                            {% for error in field.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {% if field.type == "TextAreaField" %} 
+                            
+                            {{ field(class="form-control form-control-sm", rows=20, cols=20)}}
+                        {% else %}
+                            {{ field(class="form-control form-control-lg ") }}
+                        {% endif %}
+                    {% endif %}
+
+                {% endif %}
+
+            </div>
+
+        {% endfor %}
+    </fieldset>
+    
+</form>
+
+
+
+  -->

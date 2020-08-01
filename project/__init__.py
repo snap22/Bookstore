@@ -22,10 +22,11 @@ def create_app(config_object=Config):
     from project.main.routes import main
     from project.users.account.routes import account
     from project.users.admin.routes import admin
+    from project.books.routes import books
     app.register_blueprint(main)
     app.register_blueprint(account)
     app.register_blueprint(admin)
-
+    app.register_blueprint(books)
 
     with app.app_context():
         db.create_all()

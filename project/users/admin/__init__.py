@@ -1,6 +1,6 @@
 from project.models.account import User
 from project.models.admin import Admin
-from flask import session
+from flask import session, abort
 
 # pozrie sa ci je id uzivatela v databaze adminov, ak hej prida ho do session
 def check_admin(user):
@@ -16,3 +16,5 @@ def is_admin():
 def logout_admin():
     if is_admin():
         session.pop("admin", None)
+
+

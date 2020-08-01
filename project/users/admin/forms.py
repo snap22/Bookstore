@@ -14,7 +14,9 @@ class NewBookForm(FlaskForm):
     pages_num = IntegerField("Počet strán",validators=[DataRequired()])
     year_published = IntegerField("Rok vydania",validators=[DataRequired()])
     publisher = StringField("Vydavateľ", validators=[DataRequired(), Length(2, 100)])
+    language = StringField("Jazyk", validators=[DataRequired(), Length(2, 100)])
     info = TextAreaField("Obsah knihy", validators=[DataRequired()])
+    
     submit = SubmitField("Pridať knihu")
 
     def validate_title(self, title):

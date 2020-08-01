@@ -1,0 +1,120 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+
+    <div class="row mt-5">
+        <div class="col-3">
+           <!-- Book picture -->
+            <div>
+                <img src="{{ url_for('static', filename='pictures/books/' + item.picture) }}" alt="Fotka knihy" width="225" height="250" class="img-fluid">
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="h1">
+                <b> {{ item.title }}</b>
+            </div>
+            <div class="text-info h5">
+                {{ author.name }}
+            </div>
+            
+            <div class="bg-light mt-3">
+                <!-- Info o knihe -->
+                <div class="mt-1 ml-2">
+                    <div class="row text-dark small">
+                        <div class="col">
+                            <dl class>
+                                <dt> Žáner </dt>
+                                <dd> {{item.genre}} </dd>
+                            </dl>
+                        </div>
+                        <div class="col">
+                            <dl>
+                                <dt> Vydavateľ </dt>
+                                <dd> {{item.publisher}} </dd>
+                            </dl>
+                        </div>
+                        <div class="col">
+                            <dl>
+                                <dt> Rok vydania </dt>
+                                <dd> {{item.year_published}} </dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <div class="row text-dark small">
+                        <div class="col">
+                            <dl>
+                                <dt> Počet strán </dt>
+                                <dd> {{item.pages_num}} </dd>
+                            </dl>
+                        </div>
+
+                        <div class="col">
+                            <dl>
+                                <dt> Jazyk </dt>
+                                <dd> {{item.language}} </dd>
+                            </dl>
+                        </div>
+
+                        <div class="col">
+                            <dl>
+                                <dt> ISBN </dt>
+                                <dd> {{item.isbn}} </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <div class="col-3 border-left">
+            <div class=" h3">
+                <b> {{ item.price }} € </b>
+            </div>
+            <div class="btn btn-outline-dark ">
+                <span>
+                    Vložiť do košíka
+                </span>
+            </div>
+
+            <div class="text-success small mt-2">
+                Na sklade  <!-- Podla dostupneho mnozstva(nova tabulka, Na sklade / Vypredane) -->
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-3"></div>
+        <div class="col-6 bg-light">
+            <div class="text-dark p-3">
+                <b>O knihe</b> <br>
+                {{ item.info }}
+            </div>
+        </div>
+    </div>
+
+    
+    
+    
+
+
+{% endblock %}
+
+<!-- class Book(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(200), nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    genre = db.Column(db.String(200), nullable=False)
+    pages_num = db.Column(db.Integer, nullable=False)
+    isbn = db.Column(db.String(30), nullable=False)
+    year_published = db.Column(db.Integer)
+    publisher = db.Column(db.String(100), nullable=False)   
+    picture = db.Column(db.String(20), nullable=False, default="Default.png")   #obrazok pre knihu
+    language = db.Column(db.String(40), nullable=False, default="Slovenský")
+    info = db.Column(db.Text, nullable=False)
+
+    author_id = db.Column(db.Integer, db.ForeignKey("author.id"), nullable=False)
+ -->
