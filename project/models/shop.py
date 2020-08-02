@@ -21,7 +21,7 @@ class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
     price = db.Column(db.Float, nullable=False)
-    genre = db.Column(db.String(200), nullable=False)
+    genre = db.Column(db.String(200), nullable=False, default="Neuvedený")
     pages_num = db.Column(db.Integer, nullable=False)
     isbn = db.Column(db.String(30), nullable=False)
     year_published = db.Column(db.Integer)

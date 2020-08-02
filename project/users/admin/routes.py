@@ -3,6 +3,8 @@ from flask_login import current_user, login_required
 from project.models.shop import Book, Author
 from project.users.admin.forms import NewBookForm, FindBookForm, GenBookForm
 from project import db
+from project.utils.webscrape import SearchScrape, BookInfoGenerator
+from project.models.search import FoundBookInfo, Result
 
 admin = Blueprint("admin", __name__)
 
@@ -11,37 +13,83 @@ admin = Blueprint("admin", __name__)
 def gen_book():
     findForm = FindBookForm()
     genForm = GenBookForm() 
-    
-    if "found_choices" in session:
-        x = Book.query.all()
-        genForm.select.choices = [(book.id, book.title) for book in x]
-    
+
+    #genForm.select.choices = [(book.id, book.title) for book in Book.query.all() -> store in var]
+    if "found_id" in session:
+        
+        found_books = FoundBookInfo.query.filter_by(result_id=session["found_id"]).all()
+        
+        genForm.select.choices = [(book.id, book.description) for book in found_books]  #!!! aby to fungovalo, lebo ak select=0 tak sa nic nedeje
+
     if request.method == "POST":
-        if findForm.validate_on_submit() and findForm.name.data:
-            flash("Continuing bitch", "info")
-            
-            session["found_choices"] = "wii"
+        #Klikne na hladat
+        if findForm.validate_on_submit() and findForm.name.data:   
+            keywords = findForm.name.data
+            flash(Markup(f"Našlo výsledky pre <b> { keywords }</b>"), "info")
+
+            result = Result.query.filter_by(searched_words=keywords).first()  #skusi pohladat v databaze ci uz boli vyhladavanie tieto slova
+            if result:
+                session["found_id"] = result.id
+            elif result is None:  #ak neboli
+                flash("Pridané do databázy", "primary")
+                new_result = Result(searched_words=keywords)
+                db.session.add(new_result)
+                db.session.commit()
+
+                searcher = SearchScrape()
+                searcher.search(keywords)   #vyhlada info
+                found_books_choices = searcher.get_items()
+                found_books = enumerate(found_books_choices)
+                for index, found_book in found_books:  #pre kazde info co naslo tak to hodi do databazy
+                    new_info = FoundBookInfo(description=found_book.info, link=found_book.link, result_id=new_result.id, choice_num=index)
+                    db.session.add(new_info)
+                
+                db.session.commit()
+
+                session["found_id"] = new_result.id
+
             
             return redirect(url_for("admin.gen_book"))
         
-        if genForm.validate_on_submit() and genForm.select.data:
+        if genForm.validate_on_submit() and genForm.select.data:    #ak sa klikne na tlacitko pokracovat
             flash(f"Selected {genForm.select.data}", "warning")
+            if genForm.select.data is None:
+                return redirect(url_for("admin.gen_book"))
 
-            session.pop("found_choices", None)
-            return redirect(url_for("admin.gen_book"))
+            session.pop("found_id", None)
+            
+            return redirect(url_for("admin.new_book", gen_book_id=genForm.select.data))   #!!! hore sa pricitalo 1, tu sa musi odcitat
 
     return render_template("admin/bookGen.html", find_form = findForm, gen_form = genForm)
 
 
 
+@admin.route("/book/new/")
+def new_book_basic():
+    return redirect(url_for("admin.new_book", gen_book_id=0))
 
-
-@admin.route("/book/new/", methods=["POST", "GET"])
-@login_required
-def new_book():
+@admin.route("/book/new/generateID=<int:gen_book_id>", methods=["POST", "GET"])
+def new_book(gen_book_id):
     form = NewBookForm()
 
-    if form.validate_on_submit():
+    if gen_book_id > 0:    #to bude vtedy ak chcem vygenerovat knihu, inak bude vsade -1
+        
+        generated_book = FoundBookInfo.query.get(gen_book_id)
+        if generated_book is None:  #ak sa nenasla kniha s takymto id
+            flash("Link s takýmto id sa nenašiel", "danger")
+            return redirect(url_for("admin.gen_book"))
+        book_name, author_name = generated_book.description.split("---")
+        book_in_db = Book.query.filter_by(title=book_name.strip()).first()
+
+        if book_in_db:
+            flash("Táto kniha už je v databáze", "primary")
+            #redirect do editu
+        else:
+            generator = BookInfoGenerator()
+            generator.generate_data(generated_book.link)
+            generator.fill_in_form(form)
+
+    if form.validate_on_submit(): 
         writer = Author.query.filter_by(name=form.author.data).first()
         
         if writer == None:
@@ -59,7 +107,8 @@ def new_book():
             year_published = form.year_published.data,
             publisher = form.publisher.data,
             info = form.info.data,
-            author_id = writer.id
+            author_id = writer.id,
+            language = form.language.data
         )
         
         db.session.add(book)
@@ -69,3 +118,23 @@ def new_book():
         return redirect(url_for("main.home"))
 
     return render_template("books/newBook.html", form=form, legend="Nová kniha")
+
+
+@admin.route("/test/")
+def test():
+    form = NewBookForm()
+    
+    return f"Type = {type(form)}"
+
+# PRE EDIT BOOK
+""" flash("Táto kniha už je v databáze, môžeľ ju upraviť")
+            form.title.data = book_in_db.title
+            form.price.data = book_in_db.price
+            form.genre.data = book_in_db.genre
+            form.pages_num.data = book_in_db.pages_num
+            form.isbn.data = book_in_db.isbn
+            form.year_published.data = book_in_db.year_published
+            form.info.data = book_in_db.info
+            form.author.data = author_in_db.name
+            form.language.data = book_in_db.language
+            form.publisher.data = book_in_db.publisher """

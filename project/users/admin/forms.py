@@ -31,5 +31,5 @@ class FindBookForm(FlaskForm):
     submit = SubmitField("Hľadať")
 
 class GenBookForm(FlaskForm):
-    select = SelectField("", choices=[], coerce=int)
+    select = SelectField("", choices=[(0, "Žiadne výsledky zatiaľ")], coerce=int, default=0)
     submit = SubmitField("Pokračovať")

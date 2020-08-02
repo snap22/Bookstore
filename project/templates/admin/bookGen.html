@@ -11,6 +11,8 @@
             {{ find_form.name(class="form-control form-control-lg", placeholder="Názov knihy alebo meno autora") }}
         </div>
             {{ find_form.submit(class="btn btn-outline-dark btn-lg")}}
+
+            <a href="{{ url_for('admin.new_book_basic')}}" class="btn btn-danger btn-lg">Vynechať</a>
     </form>
 </div>
 
