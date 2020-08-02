@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, FloatField, TextAreaField, IntegerField
+from wtforms import StringField, PasswordField, SubmitField, FloatField, TextAreaField, IntegerField, SelectField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError
 from flask_login import current_user
 from project.models.shop import Book, Author
@@ -26,17 +26,10 @@ class NewBookForm(FlaskForm):
 
     
         
+class FindBookForm(FlaskForm):
+    name = StringField("Názov knihy")
+    submit = SubmitField("Hľadať")
 
-
-
-"""
-title = db.Column(db.String(200), nullable=False)
-    price = db.Column(db.Float, nullable=False)
-    genre = db.Column(db.String(200), nullable=False)
-    pages_num = db.Column(db.Integer, nullable=False)
-    isbn = db.Column(db.String(30), nullable=False)
-    year_published = db.Column(db.Integer)
-    publisher = db.Column(db.String(100), nullable=False)   
-    picture = db.Column(db.String(20), nullable=False, default="Default.png")   #obrazok pre knihu
-    language = db.Column(db.String(40), nullable=False, default="Slovenský")
-"""
+class GenBookForm(FlaskForm):
+    select = SelectField("", choices=[], coerce=int)
+    submit = SubmitField("Pokračovať")
