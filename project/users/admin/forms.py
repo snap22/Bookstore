@@ -19,12 +19,6 @@ class NewBookForm(FlaskForm):
     
     submit = SubmitField("Pridať knihu")
 
-    def validate_title(self, title):
-        book = Book.query.filter_by(title=title.data).first()
-        if book:
-            raise ValidationError("Kniha s týmto názvom už je v databáze")
-
-    
         
 class FindBookForm(FlaskForm):
     name = StringField("Názov knihy")

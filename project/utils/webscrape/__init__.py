@@ -49,6 +49,7 @@ class BookInfoGenerator:
         self.isbn = 1234567890
         self.language = "Slovenský"
         self.publisher = "Neuvedený"
+        self.genre = "Neuvedený"
 
 
     def generate_data(self, link):
@@ -71,6 +72,7 @@ class BookInfoGenerator:
         book_info = section.find("div", class_="bookInfo")
         s = book_info.find_all("span", class_="highlight")
         
+        self.genre = link.split("/")[-2].replace("-", " ")
         #hardcoded shit
         for el in s:
             if el.get_text() == "Počet strán:":
@@ -93,7 +95,7 @@ class BookInfoGenerator:
         form.title.data = self.title
         form.author.data = self.author
         form.price.data = self.price.replace(",", ".")
-        form.genre.data = "Neuvedené"
+        form.genre.data = self.genre
         form.isbn.data = self.isbn
         form.pages_num.data = self.pages_num
         form.year_published.data = self.date_published

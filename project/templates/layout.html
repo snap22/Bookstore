@@ -38,8 +38,8 @@
              
             <!-- Search bar -->
             <div class="navbar-nav mr-3">
-                <form class="form-inline">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Názov knihy" aria-label="Search">
+                <form class="form-inline" method="GET" action="{{ url_for('main.search') }}">
+                    <input class="form-control mr-sm-2" type="search" name="q" placeholder="Názov knihy" aria-label="Search">
                     <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Hľadať</button>
                 </form>
             </div>
