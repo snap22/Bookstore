@@ -10,7 +10,7 @@ main = Blueprint("main", __name__)
 @main.route("/home/")
 def home():
     page = request.args.get("page", 1, type=int)
-    books = Book.query.paginate(page=page, per_page=5)
+    books = Book.query.order_by(Book.id.desc()).paginate(page=page, per_page=5)
 
     authors = Author.query
     return render_template("main/home.html", title="Home", books=books, authors=authors)
@@ -32,18 +32,18 @@ def search():
         flash(Markup(f"Hľadanie výrazu <b> {search_obj} </b>"), "info")
         #fail
         found_books = search_books(search_obj)
+        
         if found_books is None:
             flash("Nenašli sa žiadne knihy pre zadaný výraz", "warning")
-            found_books = Book.query
+            return redirect(url_for("main.home"))
 
         books = found_books.paginate(page=page, per_page=5)
     else:
-        books = Book.query.paginate(page=page, per_page=5)
+        return redirect(url_for("main.home", page=page))
 
     authors = Author.query
     return render_template("main/home.html", title="Home", books=books, authors=authors)
 
 @main.route("/test/")
 def test():
-    x = request.url
     return f"The test is: {x}"

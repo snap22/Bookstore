@@ -5,6 +5,11 @@
 from project.models.shop import Author, Book
 from project import db
 
+class Searcher:
+    def search(self, phrase):
+        self.phrase = phrase
+
+
 def search_books(phrase):
     words = phrase.split(" ")
     found_books = None
