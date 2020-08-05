@@ -19,8 +19,6 @@ def gen_book():
         
         found_books = FoundBookInfo.query.filter_by(result_id=session["found_id"]).all()
         genForm.select.choices = [(book.id, book.description) for book in found_books]  #!!! aby to fungovalo, lebo ak select=0 tak sa nic nedeje
-
-
     if request.method == "POST":
         #Klikne na hladat
         if findForm.validate_on_submit() and findForm.name.data:   
@@ -136,6 +134,7 @@ def edit_book(book_id):
         return redirect(url_for("admin.gen_book"))
     
     form = NewBookForm()
+    #form.submit.text = "Upraviť"
     # ak sa submitne button tak sa aktualizuju vsetky informacie o knihe na zaklade vyplneneho formulara
     if form.validate_on_submit():
         writer = Author.query.filter_by(name=form.author.data).first()

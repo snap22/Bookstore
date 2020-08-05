@@ -26,10 +26,14 @@ def about():
 
 @main.route("/search/")
 def search():
-    search_obj = request.args.get("q")
-    flash(search_obj, "primary")
     page = request.args.get("page", 1, type=int)
-    books = Book.query.paginate(page=page, per_page=5)
+    search_obj = request.args.get("q")
+    if search_obj:
+        flash(search_obj, "primary")
+        first_word = search_obj.split(" ")[0]
+        books = Book.query.filter_by(title=search_obj).paginate(page=page, per_page=5)
+    else:
+        books = Book.query.paginate(page=page, per_page=5)
 
     authors = Author.query
     return render_template("main/home.html", title="Home", books=books, authors=authors)
