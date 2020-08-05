@@ -36,9 +36,9 @@
 {% for page_num in books.iter_pages() %}
     {% if page_num %}
         {% if page_num == books.page %}
-            <a class="btn btn-dark mb-4" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
+            <a class="btn btn-dark mb-4" href="{{ url_for('main.search', page=page_num) }}">{{ page_num }}</a>
         {% else %}
-        <a class="btn btn-outline-dark mb-4" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
+        <a class="btn btn-outline-dark mb-4" href="{{ url_for('main.search', page=page_num, q=request.args.get('q')) }}">{{ page_num }}</a>
         {% endif %}
     {% endif %}
 {% endfor %}

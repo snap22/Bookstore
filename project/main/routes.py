@@ -1,7 +1,7 @@
-from flask import Blueprint, redirect, url_for, render_template, session, request, flash
+from flask import Blueprint, redirect, url_for, render_template, session, request, flash, Markup
 from flask_login import current_user
 from project.models.shop import Book, Author
-
+from project.utils import search_books
 
 
 main = Blueprint("main", __name__)
@@ -29,12 +29,21 @@ def search():
     page = request.args.get("page", 1, type=int)
     search_obj = request.args.get("q")
     if search_obj:
-        flash(search_obj, "primary")
-        first_word = search_obj.split(" ")[0]
-        books = Book.query.filter_by(title=search_obj).paginate(page=page, per_page=5)
+        flash(Markup(f"Hľadanie výrazu <b> {search_obj} </b>"), "info")
+        #fail
+        found_books = search_books(search_obj)
+        if found_books is None:
+            flash("Nenašli sa žiadne knihy pre zadaný výraz", "warning")
+            found_books = Book.query
+
+        books = found_books.paginate(page=page, per_page=5)
     else:
         books = Book.query.paginate(page=page, per_page=5)
 
     authors = Author.query
     return render_template("main/home.html", title="Home", books=books, authors=authors)
 
+@main.route("/test/")
+def test():
+    x = request.url
+    return f"The test is: {x}"
