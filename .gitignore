@@ -1,3 +1,4 @@
 #ignores the virtual environment
 /venv
 project/static/pictures
+shit.bat
