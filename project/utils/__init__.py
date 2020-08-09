@@ -20,9 +20,13 @@ def search_books(phrase):
             break
 
     if found_books is None or found_books.count() == 0:
-        author = Author.query.filter(Author.name.contains(words[0])).first()
-        if author is None:
-            return None
-        found_books = author.books
+        found_books = search_by_author_name(words[0])
 
     return found_books
+
+def search_by_author_name(author_name):
+    author = Author.query.filter(Author.name.contains(author_name)).first()
+    if author:
+        return author.books
+    else:
+        return None

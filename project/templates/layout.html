@@ -38,7 +38,7 @@
              
             <!-- Search bar -->
             <div class="navbar-nav mr-3">
-                <form class="form-inline" method="GET" action="{{ url_for('main.search') }}">
+                <form class="form-inline" method="GET" action="{{ url_for('search.search') }}">
                     <input class="form-control mr-sm-2" type="search" name="q" placeholder="Názov knihy" aria-label="Search">
                     <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Hľadať</button>
                 </form>
@@ -55,10 +55,11 @@
                         </a>
 
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a href="#" class="dropdown-item"> Môj účet </a>
-                            <a href="#" class="dropdown-item"> Moje objednávky </a>
+                            <a href="{{ url_for('account.my_account') }}" class="dropdown-item"> Môj účet </a>
+                            
                             <!-- Test -->
                             <a href="{{ url_for('admin.gen_book') }}" class="dropdown-item"> Pridať knihu </a>
+                            <!-- EndTest -->
                             <div class="dropdown-divider"></div>
                             <a href="{{ url_for('account.logout') }}" class="dropdown-item"> Odhlásiť sa </a>
                         </div>
