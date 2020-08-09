@@ -18,26 +18,19 @@ class User(db.Model, UserMixin):
 
     orders = db.relationship("Order", backref="ordered_items", lazy=True)
 
-    info_id = db.Column(db.Integer, db.ForeignKey("info.id"), nullable=True)
-    
+    address_id = db.Column(db.Integer, db.ForeignKey("address.id"), nullable=True)  #adresa nie je povinna pri registracii uzivatela
 
     def __repr__(self):
         return f"User {self.username}, email={self.email}, picture={self.picture}"
 
-
-
-#kontaktne udaje
-class Info(db.Model):
+# adresa
+class Address(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(100), nullable=False)
-    last_name = db.Column(db.String(100), nullable=False)
-    phone_number = db.Column(db.String(100), nullable=False)
-    state = db.Column(db.String(100), nullable=False, default="Slovakia")
-    city = db.Column(db.String(100), nullable=False)
+    state = db.Column(db.String(30), unique=True, nullable=False)
+    city = db.Column(db.String(80), unique=True, nullable=False)
     psc = db.Column(db.String(5), nullable=False)
-    street = db.Column(db.String(80), nullable=False)
+    street = db.Column(db.String(80), unique=True, nullable=False)
     house_number = db.Column(db.Integer, nullable=False)
 
-
-
+    inhabitants = db.relationship("User", backref="users", lazy=True)
 

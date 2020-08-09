@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, IntegerField
+from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError
 from flask_login import current_user
 from project.models.account import User
@@ -28,24 +28,3 @@ class LoginForm(FlaskForm):
 
 #update account info + adresa
 #reset hesla
-
-class ContactForm(FlaskForm):
-    first_name = StringField("Krstné meno", validators=[DataRequired(message="Toto pole je povinné")])
-    last_name =  StringField("Priezvisko", validators=[DataRequired(message="Toto pole je povinné")])
-    phone_number =  StringField("Telefónne číslo", validators=[DataRequired(message="Toto pole je povinné")])
-    city =  StringField("Mesto", validators=[DataRequired(message="Toto pole je povinné")])
-    street = StringField("Ulica", validators=[DataRequired(message="Toto pole je povinné")])
-    house_number = IntegerField("Číslo domu", validators=[DataRequired(message="Toto pole je povinné")])
-    psc = StringField("PSČ", validators=[DataRequired(message="Toto pole je povinné")])
-    submit = SubmitField("Uložiť")
-
-    def validate_psc(self, psc):
-        if (psc.data.strip().isdigit() and len(psc.data) == 5) == False:
-            raise ValidationError(message="Zadajte správne PSČ bez medzier")
-
-    def validate_phone_number(self, phone_number):
-        if (phone_number.data.strip().isdigit() and len(phone_number.data) == 10)  == False:
-            raise ValidationError(message="Zadajte správne telefónne číslo bez medzier")
-
-class EditAccountForm(FlaskForm):
-    pass
