@@ -7,10 +7,12 @@
                 <a href="{{url_for('books.book', book_id=book.id) }}">
                 <img class="m-2 float-left rounded" src="{{url_for('static', filename='pictures/books/' + book.picture) }}" alt="Obrázok sa nenašiel" width="100"  height="100">
                 </a>
+                {% set curr_author = authors.get(book.author_id) %}
                 <div class="mt-2">
                     <a href="{{url_for('books.book', book_id=book.id) }}" class="text-dark "> <h3> <b>{{book.title }} </b> </h3></a>
-                    <a href="{{ url_for('main.search', q=authors.get(book.author_id).name.split(' ')[-1]) }}"><span class="text-muted"> <h5>{{ authors.get(book.author_id).name }}</h5></span></a>
+                    <a href="{{ url_for('search.search_by_author', author_name=curr_author.name) }}"><span class="text-muted"> <h5>{{ curr_author.name }}</h5></span></a>
                 </div>
+                
                 
             </div>
             <div class="col-2 mr-2">
@@ -37,9 +39,9 @@
 {% for page_num in books.iter_pages() %}
     {% if page_num %}
         {% if page_num == books.page %}
-            <a class="btn btn-dark mb-4" href="{{ url_for('main.search', page=page_num, q=request.args.get('q')) }}">{{ page_num }}</a>
+            <a class="btn btn-dark mb-4" href="{{ url_for(request.endpoint, author_name=request.args.get('author_name'), page=page_num, q=request.args.get('q')) }}">{{ page_num }}</a>
         {% else %}
-        <a class="btn btn-outline-dark mb-4" href="{{ url_for('main.search', page=page_num, q=request.args.get('q')) }}">{{ page_num }}</a>
+        <a class="btn btn-outline-dark mb-4" href="{{ url_for(request.endpoint, author_name=request.args.get('author_name'), page=page_num, q=request.args.get('q')) }}">{{ page_num }}</a>
         {% endif %}
     {% endif %}
 {% endfor %}

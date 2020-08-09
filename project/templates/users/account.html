@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+{% block content %}
+
+    <div class="mt-3 ">
+        <div class="row">
+            <div class="col-md-3 border-right">
+                <img class="rounded-circle" src="{{ url_for('static', filename='pictures/users/' + current_user.picture) }}" alt="profile_pic" class="" width="200" height="200">
+            </div>
+
+            <div class="col-md">
+                <div>
+                    <div class="text-dark h1">
+                        <b>{{ current_user.username }} </b> 
+                    </div>
+                    <div class="text-dark h3">
+                        {{ current_user.email }}
+                    </div>
+
+                    <div>
+                        <!-- Button pre zmenu obrazka -->
+                        <button type="submit" class="btn btn-outline-primary">Upraviť údaje</button>
+                        <button type="submit" class="btn btn-outline-primary">Zmena hesla</button>
+                    </div>
+                </div>
+
+                
+            </div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    
+                    <div class="card bg-light" style="width: 18rem;">
+                        {% if has_info %}
+                        <div class="card-body">
+                          <h5 class="card-title"> <b> Kontaktné údaje </b></h5>
+                          <h6 class="card-subtitle mb-2 text-muted"> </h6>
+                          <p class="card-text">
+                              <div>
+                                    Meno: {{contact.first_name }} {{ contact.last_name}}
+                              </div>
+                              <div>
+                                  
+                                    Ulica:  {{ contact.street }}  <br>
+                                    Číslo domu: {{ contact.house_number }} <br>
+                                    Mesto: {{ contact.city }} <br>
+                                    PSČ: {{ contact.psc }} <br>
+                              </div>
+                              <div>
+                                    Telefónne číslo: <span class="text-decoration-none text-dark no-underline">{{ contact.phone_number }}</span>
+                              </div>
+                          </p>
+                          <a href="{{url_for('account.account_edit_contact')}}" class="card-link">Upraviť</a>
+                          
+                        </div>
+
+                        {% else %}
+                            <div class="card-body">
+                                <h5 class="card-title">Kontaktné údaje</h5>
+                                <p class="card-text">Nie sú žiadne kontaktné údaje k dispozícii</p>
+                                <a href="{{url_for('account.account_edit_contact_new')}}" class="card-link">Pridať</a>
+                                    
+                                
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="col-md-3"></div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}

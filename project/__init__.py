@@ -20,13 +20,17 @@ def create_app(config_object=Config):
     login_manager.init_app(app)
 
     from project.main.routes import main
+    from project.main.search.routes import book_search
     from project.users.account.routes import account
     from project.users.admin.routes import admin
     from project.books.routes import books
+    
     app.register_blueprint(main)
+    app.register_blueprint(book_search)
     app.register_blueprint(account)
     app.register_blueprint(admin)
     app.register_blueprint(books)
+    
 
     with app.app_context():
         db.create_all()
