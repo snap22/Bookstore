@@ -39,5 +39,3 @@ class Info(db.Model):
     house_number = db.Column(db.Integer, nullable=False)
 
 
-
-

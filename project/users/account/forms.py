@@ -3,6 +3,7 @@ from wtforms import StringField, PasswordField, SubmitField, IntegerField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError
 from flask_login import current_user
 from project.models.account import User
+from project import bcrypt
 
 class RegisterForm(FlaskForm):
     username = StringField("Používateľské meno", validators=[DataRequired(message="Toto pole je povinné"), Length(3, 30, message="Vyberte si uživateľské meno ktoré má aspoň 3 a najviac 30 znakov")])
@@ -47,5 +48,45 @@ class ContactForm(FlaskForm):
         if (phone_number.data.strip().isdigit() and len(phone_number.data) == 10)  == False:
             raise ValidationError(message="Zadajte správne telefónne číslo bez medzier")
 
+
+
 class EditAccountForm(FlaskForm):
-    pass
+    username = StringField("Používateľské meno", validators=[DataRequired(message="Toto pole je povinné")])
+    email = StringField("Email", validators=[DataRequired(message="Toto pole je povinné"), Email(message="Použite platný email")])
+    submit = SubmitField("Uložiť")
+
+    def validate_username(self, username):
+        if username.data != current_user.username:
+            user = User.query.filter_by(username=username.data).first()
+            if user:
+                raise ValidationError("Toto používateľské meno je už obsadené.")
+        
+
+    def validate_email(self, email):
+        if email.data != current_user.email:
+            user = User.query.filter_by(email=email.data).first()
+            if user:
+                raise ValidationError("Tento email je už obsadený.")
+        
+
+
+class ChangePasswordForm(FlaskForm):
+    current_password = PasswordField("Pôvodné heslo", validators=[DataRequired(message="Toto pole je povinné")])
+    new_password = PasswordField("Nové heslo", validators=[DataRequired(message="Toto pole je povinné")])
+    confirm_new_password = PasswordField("Potvrdenie nového hesla", validators=[DataRequired(message="Toto pole je povinné"), EqualTo("new_password", message="Heslá musia byť rovnaké")])
+    submit = SubmitField("Uložiť")
+
+    #Vráti bool či sa aktualne heslo pouzivatela rovna heslu ktore zadal do fieldu
+    def __check_password(self, password_field):
+        return bcrypt.check_password_hash(current_user.password, password_field.data)
+    
+    
+    def validate_new_password(self, new_password):
+        if self.__check_password(new_password):
+            raise ValidationError("Zvoľte si iné heslo.")
+
+    def validate_current_password(self, current_password):
+        if not self.__check_password(current_password):
+            raise ValidationError("Toto heslo nie je platné")
+
+    

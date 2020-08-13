@@ -1,6 +1,6 @@
 from flask import Blueprint, redirect, render_template, url_for, request, flash, Markup
 from flask_login import current_user, login_user, logout_user, login_required
-from project.users.account.forms import LoginForm, RegisterForm, EditAccountForm, ContactForm
+from project.users.account.forms import LoginForm, RegisterForm, EditAccountForm, ContactForm, ChangePasswordForm
 from project.models.account import User, Info
 from project import bcrypt, db
 from project.models.account import Info
@@ -63,12 +63,34 @@ def my_account():
 @account.route("/account/edit/info/", methods=["GET", "POST"])
 @login_required
 def account_edit_info():
-    
-    
-    
+    form = EditAccountForm()
+    user = User.query.get(current_user.id)
+    if request.method == "POST":
+        if form.validate_on_submit():
+            user.username = form.username.data
+            user.email = form.email.data
+            db.session.commit()
+            flash("Údaje boli aktualizované", "success")
+            return redirect(url_for("account.my_account"))
+    else:
+        form.username.data = user.username
+        form.email.data = user.email
 
+    return render_template("users/accountEdit.html", form=form, legend="Základné údaje")
 
-    return "BITCH"
+@account.route("/account/edit/password/", methods=["GET", "POST"])
+@login_required
+def account_edit_password():
+    form = ChangePasswordForm()
+    user = User.query.get(current_user.id)
+    if form.validate_on_submit():
+        new_password = bcrypt.generate_password_hash(form.new_password.data) 
+        user.password = new_password
+        db.session.commit()
+        flash("Heslo bolo zmenené", "success")
+        return redirect(url_for("account.my_account"))
+
+    return render_template("users/accountEdit.html", form=form, legend="Základné údaje")
 
 
 # adresa

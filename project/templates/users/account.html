@@ -18,8 +18,10 @@
 
                     <div>
                         <!-- Button pre zmenu obrazka -->
-                        <button type="submit" class="btn btn-outline-primary">Upraviť údaje</button>
-                        <button type="submit" class="btn btn-outline-primary">Zmena hesla</button>
+                        <a href="#" class="btn btn-outline-primary"> Zmeniť fotku </a>
+                        <a href="{{ url_for('account.account_edit_info') }} " class="btn btn-outline-primary"> Upraviť údaje </a>
+                        <a href="{{ url_for('account.account_edit_password') }} " class="btn btn-outline-primary"> Zmeniť heslo </a>
+                
                     </div>
                 </div>
 
