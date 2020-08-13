@@ -54,7 +54,6 @@ class ContactForm(FlaskForm):
 class EditAccountForm(FlaskForm):
     username = StringField("Používateľské meno", validators=[DataRequired(message="Toto pole je povinné")])
     email = StringField("Email", validators=[DataRequired(message="Toto pole je povinné"), Email(message="Použite platný email")])
-    picture = FileField("Aktualizácia profilovej fotky", validators=[FileAllowed(["jpg", "png"])])
     submit = SubmitField("Uložiť")
 
     def validate_username(self, username):
@@ -70,7 +69,9 @@ class EditAccountForm(FlaskForm):
             if user:
                 raise ValidationError("Tento email je už obsadený.")
         
-
+class ChangePictureForm(FlaskForm):
+    picture = FileField("Profilová fotka", validators=[FileAllowed(["jpg", "png"])])
+    submit = SubmitField("Uložiť")
 
 class ChangePasswordForm(FlaskForm):
     current_password = PasswordField("Pôvodné heslo", validators=[DataRequired(message="Toto pole je povinné")])

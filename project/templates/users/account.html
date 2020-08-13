@@ -5,6 +5,11 @@
         <div class="row">
             <div class="col-md-3 border-right">
                 <img class="rounded-circle" src="{{ url_for('static', filename='pictures/users/' + current_user.picture) }}" alt="profile_pic" class="" width="200" height="200">
+                
+                <div class="mt-5">
+                    {% include "users/fileForm.html" %}
+                </div>
+                
             </div>
 
             <div class="col-md">
@@ -18,7 +23,7 @@
 
                     <div>
                         <!-- Button pre zmenu obrazka -->
-                        <a href="#" class="btn btn-outline-primary"> Zmeniť fotku </a>
+                        
                         <a href="{{ url_for('account.account_edit_info') }} " class="btn btn-outline-primary"> Upraviť údaje </a>
                         <a href="{{ url_for('account.account_edit_password') }} " class="btn btn-outline-primary"> Zmeniť heslo </a>
                 

@@ -1,10 +1,10 @@
 from flask import Blueprint, redirect, render_template, url_for, request, flash, Markup
 from flask_login import current_user, login_user, logout_user, login_required
-from project.users.account.forms import LoginForm, RegisterForm, EditAccountForm, ContactForm, ChangePasswordForm
+from project.users.account.forms import LoginForm, RegisterForm, EditAccountForm, ContactForm, ChangePasswordForm, ChangePictureForm
 from project.models.account import User, Info
 from project import bcrypt, db
 from project.models.account import Info
-from project.users.account.utils import save_picture
+from project.users.account.utils import save_picture, remove_picture
 
 account = Blueprint("account", __name__)
 
@@ -54,13 +54,27 @@ def logout():
     return redirect(url_for("main.home"))
 
 
-@account.route("/account/")
+@account.route("/account/", methods=["GET", "POST"])
 @login_required
 def my_account():
     contact_info = Info.query.get(current_user.info_id)
     has_info = contact_info   
 
-    return render_template("users/account.html", contact=contact_info, has_info=has_info)
+    form = ChangePictureForm()
+
+    if request.method == "POST": 
+        if form.picture.data:
+            picture_file = save_picture(form.picture.data)
+            remove_picture(current_user.picture)    #vymaze staru fotku
+
+            current_user.picture = picture_file
+            db.session.commit()
+            flash("Fotka bola zmenená", "success")
+            return redirect(url_for(request.endpoint))
+        
+    
+    
+    return render_template("users/account.html", contact=contact_info, has_info=has_info, form=form)
 
 @account.route("/account/edit/info/", methods=["GET", "POST"])
 @login_required
@@ -69,9 +83,7 @@ def account_edit_info():
     user = User.query.get(current_user.id)
     if request.method == "POST":
         if form.validate_on_submit():
-            if form.picture.data:
-                picture_file = save_picture(form.picture.data)
-                user.picture = picture_file
+            
             user.username = form.username.data
             user.email = form.email.data
             db.session.commit()

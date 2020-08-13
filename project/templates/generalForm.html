@@ -1,5 +1,5 @@
 
-<form action="" method="POST">
+<form action="" method="POST" >
     {{ form.hidden_tag() }}
     <fieldset class="form-group">
 
@@ -30,6 +30,7 @@
                         {% if field.type == "TextAreaField" %} <!-- Ak je to dlhý text -->
                             
                             {{ field(class="form-control form-control-sm", rows=20, cols=20)}}
+                        
                         {% else %}
                             {{ field(class="form-control form-control-lg ") }}
                         {% endif %}
