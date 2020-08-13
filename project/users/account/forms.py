@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileAllowed, FileField
 from wtforms import StringField, PasswordField, SubmitField, IntegerField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError
 from flask_login import current_user
@@ -53,6 +54,7 @@ class ContactForm(FlaskForm):
 class EditAccountForm(FlaskForm):
     username = StringField("Používateľské meno", validators=[DataRequired(message="Toto pole je povinné")])
     email = StringField("Email", validators=[DataRequired(message="Toto pole je povinné"), Email(message="Použite platný email")])
+    picture = FileField("Aktualizácia profilovej fotky", validators=[FileAllowed(["jpg", "png"])])
     submit = SubmitField("Uložiť")
 
     def validate_username(self, username):

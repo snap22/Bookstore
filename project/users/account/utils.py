@@ -1,0 +1,18 @@
+import os
+import secrets
+from flask import current_app
+from PIL import Image
+
+# metoda na ulozenie obrazka a jeho orezanie
+def save_picture(form_picture):
+    random_hex = secrets.token_hex(16)
+    _, f_ext = os.path.splitext(form_picture.filename)
+    picture_name = random.hex + f_ext
+    picture_path = os.path.join(current_app.root_path, "static/pictures/users", picture_name)
+
+    img_size = (200, 200)
+    img = Image.open(form_picture)
+    img.thumbnail(img_size)
+    img.save(picture_path)
+
+    return picture_name

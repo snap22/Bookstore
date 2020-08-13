@@ -30,7 +30,7 @@ def search():
 def search_all():
     page = request.args.get("page", 1, type=int)
 
-    books = Book.query.paginate(page=page, per_page=5)
+    books = Book.query.order_by(Book.id.desc()).paginate(page=page, per_page=5)
     authors = Author.query
     return render_template("main/searchBooks.html", title="Home", books=books, authors=authors)
 

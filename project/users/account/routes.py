@@ -4,6 +4,7 @@ from project.users.account.forms import LoginForm, RegisterForm, EditAccountForm
 from project.models.account import User, Info
 from project import bcrypt, db
 from project.models.account import Info
+from project.users.account.utils import save_picture
 
 account = Blueprint("account", __name__)
 
@@ -58,6 +59,7 @@ def logout():
 def my_account():
     contact_info = Info.query.get(current_user.info_id)
     has_info = contact_info   
+
     return render_template("users/account.html", contact=contact_info, has_info=has_info)
 
 @account.route("/account/edit/info/", methods=["GET", "POST"])
@@ -67,6 +69,9 @@ def account_edit_info():
     user = User.query.get(current_user.id)
     if request.method == "POST":
         if form.validate_on_submit():
+            if form.picture.data:
+                picture_file = save_picture(form.picture.data)
+                user.picture = picture_file
             user.username = form.username.data
             user.email = form.email.data
             db.session.commit()
