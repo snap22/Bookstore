@@ -5,6 +5,7 @@ from project.models.account import User, Info
 from project import bcrypt, db
 from project.models.account import Info
 from project.users.account.utils import save_picture, remove_picture
+from project.books.utils import clear_cart
 
 account = Blueprint("account", __name__)
 
@@ -50,6 +51,7 @@ def login():
 @account.route("/logout/")
 @login_required
 def logout():
+    clear_cart()
     logout_user()
     return redirect(url_for("main.home"))
 

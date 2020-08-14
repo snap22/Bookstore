@@ -75,7 +75,7 @@
 
             <!-- Dostupné aj ked uživatel nie je prihlaseny -->
             <div class="navbar-nav mr-3 ml-2">
-                <a class="nav-item nav-link text-light" href="#">
+                <a class="nav-item nav-link text-light" href="{{ url_for('shop.cart')}}">
                     <span class="fa fa-shopping-cart mr-sm-1"> </span>
                     Košík 
                 </a>
@@ -107,7 +107,13 @@
     </div>
     
     
-    
+    <div class="empty-section mt-5 mb-5">
+        <div>
+
+        </div>
+    </div>
+
+
 
 
     <!-- Footer -->

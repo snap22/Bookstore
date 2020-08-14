@@ -1,0 +1,93 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="row mt-3">
+    <div class="col-sm">
+        <div class="row bg-dark text-light p-3 h5 font-weight-bold">
+            <div class="col-sm-8">
+                 Názov knihy
+            </div>
+            <div class="col-sm-1">
+                Počet kusov
+            </div>
+
+            <div class="col-sm-2">
+                Cena
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if selected_books %}
+    {% for book in selected_books %}
+        <div class="row mt-1">
+            <div class="col">
+                <div class="row bg-light p-3">
+                    <div class="col-sm-8">
+                         <h3><a class="text-dark text-decoration-none" href="{{url_for('books.book', book_id=book.id)}}">{{ book.title }}</a></h3>
+                         <h6 class="text-muted">{{ author.get(book.author_id).name }}</h6>
+                    </div>
+                    <div class="col-sm-1">
+                        <span class="ml-3 h5 bookAmount align-middle"> 1 </span>
+                         
+                    </div>
+
+                    
+                        
+                    <div class="col-sm-2 h4">
+                        <span class="bookPrice">
+                            {{ book.price }} €
+                        </span>
+                        
+                    </div>
+
+                    <div class="col-sm-1">
+                        <a href="{{url_for('shop.remove_from_cart', book_id=book.id)}}" class="btn btn-danger">Zmazať</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% endfor %}
+
+{% endif %}
+
+<div class="row mt-3">
+    <div class="col">
+        <div class="row bg-dark text-light h5 font-weight-bold p-3">
+            <div class="col empty"></div>
+            <div class="col-sm-2">
+                Suma celkovo: 
+            </div>
+            <div class="col-sm-2">
+                {{ full_price }} €
+            </div>
+            
+            
+            
+            
+        </div>
+    </div>
+</div>
+
+<div class="row mt-1">
+    <div class="col empty"></div>
+    <div class="col-sm-2 ">
+        <a href="{{url_for('search.search_all')}}" class="btn btn-info">
+            <span class="h5"> 
+                Pokračovať v nákupe
+            </span>
+        </a>
+    </div>
+    <div class="col-sm-2">
+        <a href="#" class="btn btn-warning">
+            <span class="h5">
+                Prejsť na platbu
+            </span>
+        </a>
+    </div>
+    
+    
+</div>
+
+{% endblock %}

@@ -99,10 +99,12 @@
             <div class=" h3">
                 <b> {{ item.price }} € </b>
             </div>
-            <div class="btn btn-outline-dark ">
-                <span>
-                    Vložiť do košíka
-                </span>
+            <div >
+                <a href="{{url_for('shop.add_to_cart', book_id=item.id)}}" class="text-dark">
+                    <span class="btn btn-outline-dark ">
+                        Vložiť do košíka
+                    </span>
+                </a>
             </div>
 
             <div class="text-success small mt-2">

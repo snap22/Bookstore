@@ -26,7 +26,7 @@
                 </p>
 
                 <div class="text-right m-2">
-                    <a href="#" class="btn btn-dark btn-lg">Kúpiť</a> <br>
+                    <a href="{{ url_for('shop.add_to_cart', book_id=book.id) }}" class="btn btn-dark btn-lg">Kúpiť</a> <br>
                 </div>
                 
             </div>
