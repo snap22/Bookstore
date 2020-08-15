@@ -13,6 +13,8 @@ def remove_book_from_cart(book_id):
     if "cart" in session:
         if book_id  in session["cart"]:
             session["cart"].remove(book_id)
+            if len(session["cart"]) == 0:
+                clear_cart()
 
 
 

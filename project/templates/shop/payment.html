@@ -1,5 +1,146 @@
 {% extends "layout.html" %}
 {% block content %}
 
+<form action="" method="POST">
+
+    {{ form.hidden_tag() }}
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <div class="mt-5">
+
+                  <div class="card">
+                    <div class="card-header" id="headingOverview">
+                      <h2 class="mb-0">
+                        <button class="btn btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseOverview" aria-expanded="false" aria-controls="collapseThree">
+                              <b> Prehľad objednávky </b>    
+                        </button>
+                      </h2>
+                    </div>
+                    <div id="collapseOverview" class="collapse" aria-labelledby="headingOverview" >
+                      <div class="card-body">
+                          <table class="table table-hover">
+                            <thead class="thead-dark">
+                                <tr>
+                                  <th scope="col">#</th>
+                                  <th scope="col">Názov knihy</th>
+                                  <th scope="col">Autor</th>
+                                  <th scope="col">Cena</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for index,book in books %}
+                                  <tr>
+                                    <th scope="row">{{ index + 1}}</th>
+                                    <td> {{ book.title }}</td>
+                                    <td class="text-muted"> {{ authors.get(book.author_id).name }}</td>
+                                    <td> {{ book.price }} €</td>
+                                  </tr>
+                                {% endfor %}
+                            </tbody>
+                          </table>
+                      </div>
+                  </div>
+                
+                    <div class="card">
+                      <div class="card-header" id="headingOne">
+                        <h2 class="mb-0">
+                          <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <b> Spôsob doručenia </b>
+                          </button>
+                        </h2>
+                      </div>
+                      <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" >
+                        <div class="card-body">
+                            <table>     
+                                {% for subfield in form.delivery_type %}
+                                    <tr>
+                                        <td>{{ subfield(class="deliveryTypes") }}</td>
+                                        <td>{{ subfield.label }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="card">
+                      <div class="card-header" id="headingTwo">
+                        <h2 class="mb-0">
+                          <button class="btn btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            <b> Adresa doručenia </b>
+                          </button>
+                        </h2>
+                      </div>
+                      <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" >
+                        <div class="card-body">
+                            <!-- Contact form - ugly  -->
+                            {% for field in form.get_input_types() %}
+                                {{ field.label(class="form-control-label") }}
+
+                                {% if field.errors %}
+                                    {{ field(class="form-control form-control is-invalid") }}
+                                    <!-- Vypise vsetky chyby -->
+                                    <div class="invalid-feedback">
+                                        {% for error in field.errors %}
+                                            <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                            
+                                    {{ field(class="form-control form-control ") }}
+                                {% endif %}
+                            {% endfor %}
+                        
+
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="card">
+                      <div class="card-header" id="headingThree">
+                        <h2 class="mb-0">
+                          <button class="btn btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                <b> Spôsob platby </b>    
+                          </button>
+                        </h2>
+                      </div>
+                      <div id="collapseThree" class="collapse" aria-labelledby="headingThree" >
+                        <div class="card-body">
+                            {% for subfield in form.pay_type %}
+
+                                <tr>
+                                    <td>{{ subfield(class="payTypes") }}</td>
+                                    <td>{{ subfield.label }}</td>
+                                </tr>
+                                <br>
+                            
+                            
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+             <div class="h2 mt-3 mb-3">
+                 Suma dokopy: 
+                 <b> <span id="orderPrice"> {{price}} </span>  € </b>
+             </div>
+            
+             <div>
+                 <a href="{{url_for('shop.cart')}}" class="btn btn-lg btn-danger">Späť</a>
+                 {{ form.submit(class="ml-3 btn btn-lg btn-success")}}
+             </div>
+
+            
+
+        </div>
+    </div>
+
+</form>
+<script src="{{ url_for('static', filename='js/payment.js') }}"></script>
 
 {% endblock %}
+

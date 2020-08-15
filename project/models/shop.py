@@ -1,5 +1,6 @@
 from project import db
 from datetime import datetime
+from secrets import token_urlsafe
 # tabulka pre many-to-many relationship
 transactions = db.Table("transactions", 
     db.Column("order_id", db.Integer, db.ForeignKey("order.id")),
@@ -38,12 +39,16 @@ class Book(db.Model):
 
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    number = db.Column(db.String(20), unique=True, nullable=False)
+    name = db.Column(db.String(16), nullable=False, default=token_urlsafe(16))
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
-    buyer_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    buyer_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=True)  #ak je anonymny tak id bude 0
+    info_id = db.Column(db.Integer, db.ForeignKey("info.id"), nullable=False)
+    total_price = db.Column(db.Integer, nullable=False)
+
     books = db.relationship("Book", secondary=transactions , backref=db.backref("orders", lazy="dynamic"))
 
     def __repr__(self):
         return f"Order num:{self.number}"
+
 
