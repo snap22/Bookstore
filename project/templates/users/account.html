@@ -42,19 +42,33 @@
                           <h5 class="card-title"> <b> Kontaktné údaje </b></h5>
                           <h6 class="card-subtitle mb-2 text-muted"> </h6>
                           <p class="card-text">
-                              <div>
-                                    Meno: {{contact.first_name }} {{ contact.last_name}}
-                              </div>
-                              <div>
-                                  
-                                    Ulica:  {{ contact.street }}  <br>
-                                    Číslo domu: {{ contact.house_number }} <br>
-                                    Mesto: {{ contact.city }} <br>
-                                    PSČ: {{ contact.psc }} <br>
-                              </div>
-                              <div>
-                                    Telefónne číslo: <span class="text-decoration-none text-dark no-underline">{{ contact.phone_number }}</span>
-                              </div>
+                              <table>
+                                  <tr>
+                                      <th>Meno:</th>
+                                      <td class="text-right">{{contact.first_name }} {{contact.last_name}}</td>
+                                      
+                                  </tr>
+                                  <tr>
+                                        <th>Ulica:</th>
+                                        <td class="text-right">{{ contact.street }}</td>
+                                  </tr>
+                                  <tr>
+                                      <th>Číslo domu:</th>
+                                      <td class="text-right">{{ contact.house_number }}</td>
+                                  </tr>
+                                  <tr>
+                                      <th>Mesto: </th>
+                                      <td class="text-right">{{ contact.city }}</td>
+                                  </tr>
+                                  <tr>
+                                      <th>PSČ: </th>
+                                      <td class="text-right">{{ contact.get_psc() }} </td>
+                                  </tr>
+                                  <tr>
+                                      <th>Tel. číslo:</th>
+                                      <td  class="text-decoration-none text-dark no-underline text-right">{{ contact.get_phone_number() }}</td>
+                                  </tr>
+                              </table>
                           </p>
                           <a href="{{url_for('account.account_edit_contact')}}" class="card-link">Upraviť</a>
                           
@@ -75,6 +89,63 @@
                 <div class="col-md-3"></div>
             </div>
 
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-12 p-5">
+                <div class="col-md ">
+                    <div class="h3 text-center mb-3">
+                        <span>
+                            Moje objednávky
+                        </span>
+                        
+                    </div>
+                    <div >
+                        {% for index, order in orders %}
+                        <div class="card">
+                            <div class="card-header bg-dark " id="heading-{{index}}">
+                              <h2 class="mb-0">
+                                
+                                <button class="btn btn-block text-left text-light" type="button" data-toggle="collapse" data-target="#collapse-{{index}}" aria-expanded="false" aria-controls="collapse-{{index}}">
+                                    <div class="row font-weight-bold h5">
+                                        <div class="col-md">
+                                            <span> Objednávka č. {{index + 1}}</span>
+                                        </div>
+                                        <div class="col-md-5 text-right">
+                                            {{ order.date.strftime("%d.%m.%Y - %H:%M:%S")}}
+                                        </div>
+                                        
+                                    </div>
+                                </button>
+                              </h2>
+                            </div>
+                            <div id="collapse-{{index}}" class="collapse" aria-labelledby="heading-{{index}}" >
+                              <div class="card-body">
+                                  <table>     
+                                        {% for book in order.books %}
+                                        <div class="row mt-2 border-bottom">
+                                            <div class="col-sm-10">
+                                                {{ book.title }}
+                                            </div>
+                                            <div class="col-sm-2 text-right">
+                                                {{ book.price }} €
+                                            </div>
+                                        </div>
+                                            <!-- <tr>
+                                                <td></td>
+                                                <td></td>
+                                            </tr> -->
+                                        {% endfor %}
+                                  </table>
+                              </div>
+                            </div>
+                          </div>
+                          {% endfor %}
+
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="row empty">

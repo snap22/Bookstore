@@ -14,7 +14,8 @@ for (let index = 0; index < delivery_radios.length; index++) {
         prevDel = val;
     });
     
-}
+} 
+
 
 var pay_radios = document.getElementsByClassName("payTypes");
 for (let index = 0; index < pay_radios.length; index++) {
@@ -25,8 +26,7 @@ for (let index = 0; index < pay_radios.length; index++) {
         prevPay = val;
     });
     
-}
-
+} 
 
 function changePrice(new_amount, reduce) {
     //var thePrice = originalPrice;
@@ -35,4 +35,8 @@ function changePrice(new_amount, reduce) {
     thePrice -= reduce;
     orderPrice.innerHTML = thePrice.toFixed(2);
 }
+
+
+
+
 

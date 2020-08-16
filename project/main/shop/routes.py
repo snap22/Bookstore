@@ -37,7 +37,6 @@ def remove_from_cart(book_id):
     return redirect(request.referrer)
         
    
-#really ugly shit
 @shop.route("/payment/", methods=["GET", "POST"])
 def payment():
     if not ("cart" in session):
@@ -57,32 +56,15 @@ def payment():
 
     if request.method == "POST":
         if form.validate_on_submit():
-            new_info = Info(
-                first_name = form.first_name.data,
-                last_name = form.last_name.data,
-                phone_number = form.phone_number.data,
-                street = form.street.data,
-                city = form.city.data,
-                psc = form.psc.data,
-                house_number = form.house_number.data,
-                state = "Slovakia",
-            )
+            new_info = Info.create_based_on_form_data(form)
 
-            found_duplicate = Info.query.filter_by(
-                first_name=new_info.first_name,
-                last_name=new_info.last_name,
-                phone_number=new_info.phone_number,
-                street=new_info.street,
-                city=new_info.city,
-                psc=new_info.psc,
-                house_number=new_info.house_number
-            ).first()
+            found_duplicate = Info.find_particular_info(new_info)
 
-            if not found_duplicate:
+            if found_duplicate:
+                new_info = found_duplicate
+            else:
                 db.session.add(new_info)
                 db.session.commit()
-            else:
-                new_info = found_duplicate
 
             if not info and is_user:     #ak je zaroven prihlaseny ale nema ulozene kontaktne udaje tak sa to ulozi
                 current_user.info_id = new_info.id
@@ -91,6 +73,7 @@ def payment():
 
             the_price = price + float(form.delivery_type.data) + float(form.pay_type.data)
             new_order = Order(buyer_id=user_id, info_id=new_info.id, total_price=the_price)
+
             for _, found_book in books:
                 new_order.books.append(found_book)
 
@@ -106,12 +89,6 @@ def payment():
     else:
         if info:
             info = Info.query.get(current_user.info_id)
-            form.first_name.data = info.first_name
-            form.last_name.data = info.last_name
-            form.phone_number.data =info.phone_number
-            form.city.data =info.city
-            form.psc.data = info.psc
-            form.house_number.data = info.house_number
-            form.street.data = info.street
+            form.fill_in(info)
 
     return render_template("shop/payment.html", form=form, price=price, books=books, authors=Author.query)

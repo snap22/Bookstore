@@ -3,7 +3,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 from project.users.account.forms import LoginForm, RegisterForm, EditAccountForm, ContactForm, ChangePasswordForm, ChangePictureForm
 from project.models.account import User, Info
 from project import bcrypt, db
-from project.models.account import Info
+from project.models.shop import Order, Book
 from project.users.account.utils import save_picture, remove_picture
 from project.books.utils import clear_cart
 
@@ -40,7 +40,8 @@ def login():
                 login_user(user, remember=True)
                 #check_admin(user)
 
-                return redirect(url_for("main.home"))
+                next_page = request.args.get('next')
+                return redirect(next_page) if next_page else redirect(url_for('main.home'))
             else:
                 flash(message=Markup("Zlé prihlasovacie meno alebo heslo. Ak ste zabudli svoje heslo, obnovte si ho <a href='#' class='alert-link'>tu</a>."), category="danger")
 
@@ -74,9 +75,11 @@ def my_account():
             flash("Fotka bola zmenená", "success")
             return redirect(url_for(request.endpoint))
         
+    else:
+        books = Book.query
+        orders = enumerate(Order.query.filter_by(buyer_id=current_user.id).all())
     
-    
-    return render_template("users/account.html", contact=contact_info, has_info=has_info, form=form)
+    return render_template("users/account.html", contact=contact_info, has_info=has_info, form=form, orders=orders, books=books, round=round)
 
 @account.route("/account/edit/info/", methods=["GET", "POST"])
 @login_required
@@ -139,13 +142,7 @@ def account_edit_contact():
             return redirect(url_for("account.my_account"))
 
     else:   #ak metoda je GET tak vyplni formular automaticky
-        form.first_name.data = info.first_name
-        form.last_name.data = info.last_name
-        form.phone_number.data =info.phone_number
-        form.city.data =info.city
-        form.psc.data = info.psc
-        form.house_number.data = info.house_number
-        form.street.data = info.street
+        form.fill_in(info)
 
     return render_template("users/accountEdit.html", form=form, legend="Úprava kontaktných údajov")
 
@@ -155,16 +152,7 @@ def account_edit_contact_new():
     form = ContactForm()
     if request.method == "POST":
         if form.validate_on_submit():
-            new_info = Info(
-                first_name = form.first_name.data,
-                last_name = form.last_name.data,
-                phone_number = form.phone_number.data,
-                street = form.street.data,
-                city = form.city.data,
-                psc = form.psc.data,
-                house_number = form.house_number.data,
-                state = "Slovakia",
-            )
+            new_info = Info.create_based_on_form_data(form)
 
             db.session.add(new_info)
             db.session.commit()

@@ -20,10 +20,28 @@ class PaymentForm(FlaskForm):
         return [self.first_name, self.last_name, self.phone_number, self.city, self.street, self.house_number, self.psc]
 
     def validate_psc(self, psc):
-        if (psc.data.strip().isdigit() and len(psc.data) == 5) == False:
-            raise ValidationError(message="Zadajte správne PSČ bez medzier")
+        data = self.__remove_empty_spaces(psc)
+        if not (data.isdigit() and len(data) == 5):     #ak je psc viac ako 5 cilic alebo v psc su pismena
+            raise ValidationError(message="Zadajte správne PSČ")
 
     def validate_phone_number(self, phone_number):
-        if (phone_number.data.strip().isdigit() and len(phone_number.data) == 10)  == False:
-            raise ValidationError(message="Zadajte správne telefónne číslo bez medzier")
+        data = self.__remove_empty_spaces(phone_number)
+        if not (data.isdigit() and len(data) == 10):    #ak su v telefonnom cisle pismena alebo ma viac ako 10 cislic
+            raise ValidationError(message="Zadajte správne telefónne v tvare 0xxx xxx xxx")
 
+    def __remove_empty_spaces(self, field):
+        new_data = field.data.replace(" ", "")
+        return new_data
+    
+    def fill_in(self, info):
+        try:
+            self.first_name.data = info.first_name
+            self.last_name.data = info.last_name
+            self.phone_number.data = info.get_phone_number()
+            self.city.data = info.city
+            self.street.data = info.street
+            self.house_number.data = info.house_number
+            self.psc.data = info.get_psc()
+        except AttributeError:  #ak je nespravny model pouzity vo formulari
+            return
+        

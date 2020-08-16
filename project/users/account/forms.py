@@ -49,6 +49,17 @@ class ContactForm(FlaskForm):
         if (phone_number.data.strip().isdigit() and len(phone_number.data) == 10)  == False:
             raise ValidationError(message="Zadajte správne telefónne číslo bez medzier")
 
+    def fill_in(self, info):
+        try:
+            self.first_name.data = info.first_name
+            self.last_name.data = info.last_name
+            self.phone_number.data = info.get_phone_number()
+            self.city.data = info.city
+            self.street.data = info.street
+            self.house_number.data = info.house_number
+            self.psc.data = info.get_psc()
+        except AttributeError:  #ak je nespravny model pouzity vo formulari
+            return
 
 
 class EditAccountForm(FlaskForm):

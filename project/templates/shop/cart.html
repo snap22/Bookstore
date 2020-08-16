@@ -20,7 +20,7 @@
 
 {% if selected_books %}
     {% for book in selected_books %}
-        <div class="row mt-1">
+        <div class="row mt-1 selectedBook">
             <div class="col">
                 <div class="row bg-light p-3">
                     <div class="col-sm-8">
@@ -28,7 +28,13 @@
                          <h6 class="text-muted">{{ author.get(book.author_id).name }}</h6>
                     </div>
                     <div class="col-sm-1">
-                        <span class="ml-3 h5 bookAmount align-middle"> 1 </span>
+                         
+                            <div class=" h5 align-middle">
+                                1
+                                <!-- <input type="number" class="form-control bookAmount" name="amountOfBooks"  min="1" step="1" value="1">     -->
+                            </div>
+                            
+                        
                          
                     </div>
 
@@ -36,8 +42,8 @@
                         
                     <div class="col-sm-2 h4">
                         <span class="bookPrice">
-                            {{ book.price }} €
-                        </span>
+                            {{ book.price }} 
+                        </span> €
                         
                     </div>
 
@@ -60,7 +66,10 @@
                 Suma celkovo: 
             </div>
             <div class="col-sm-2">
-                {{ full_price }} €
+                <span id="finalPrice">
+                    {{ full_price }}
+                </span>
+                 €
             </div>
             
             
@@ -90,4 +99,5 @@
     
 </div>
 
+<script src="{{ url_for('static', filename='js/cart.js') }}"></script>
 {% endblock %}
