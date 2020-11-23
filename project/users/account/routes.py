@@ -48,7 +48,7 @@ def login():
         return render_template("users/login.html", title="Prihlásenie", legend="Prihlásiť sa", form=form)
 
 
-
+    
 @account.route("/logout/")
 @login_required
 def logout():
@@ -75,11 +75,10 @@ def my_account():
             flash("Fotka bola zmenená", "success")
             return redirect(url_for(request.endpoint))
         
-    else:
-        books = Book.query
-        orders = enumerate(Order.query.filter_by(buyer_id=current_user.id).all())
+   
+        
     
-    return render_template("users/account.html", contact=contact_info, has_info=has_info, form=form, orders=orders, books=books, round=round)
+    return render_template("users/account.html", contact=contact_info, has_info=has_info, form=form)
 
 @account.route("/account/edit/info/", methods=["GET", "POST"])
 @login_required
@@ -165,16 +164,12 @@ def account_edit_contact_new():
     return render_template("users/accountEdit.html", form=form, legend="Kontaktné údaje")
 
 
+@account.route("/account/orders/", methods=["GET", "POST"])
+@login_required
+def my_orders():
+    books = Book.query
+    found_orders = Order.query.filter_by(buyer_id=current_user.id).order_by(Order.date.desc()).all()
+    orders = enumerate(found_orders)
+    num_of_orders = len(found_orders)
 
-""" 
-class Contact(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(100), nullable=False)
-    last_name = db.Column(db.String(100), nullable=False)
-    phone_number = db.Column(db.String(100), nullable=False)
-    state = db.Column(db.String(100), nullable=False)
-    city = db.Column(db.String(100), nullable=False)
-    psc = db.Column(db.String(5), nullable=False)
-    street = db.Column(db.String(80), unique=True, nullable=False)
-    house_number = db.Column(db.Integer, nullable=False)
- """
+    return render_template("users/orders.html", orders=orders, books=books, round=round, num=num_of_orders)

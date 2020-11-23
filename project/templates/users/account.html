@@ -25,7 +25,8 @@
                         <!-- Button pre zmenu obrazka -->
                         
                         <a href="{{ url_for('account.account_edit_info') }} " class="btn btn-outline-primary"> Upraviť údaje </a>
-                        <a href="{{ url_for('account.account_edit_password') }} " class="btn btn-outline-primary"> Zmeniť heslo </a>
+                        <a href="{{ url_for('account.account_edit_password') }} " class="btn btn-outline-danger"> Zmeniť heslo </a>
+                        <a href="{{ url_for('account.my_orders') }} " class="btn btn-outline-secondary"> Moje objednávky </a>
                 
                     </div>
                 </div>
@@ -91,62 +92,10 @@
 
         </div>
 
-        <div class="row">
+        <div>
 
-            <div class="col-md-12 p-5">
-                <div class="col-md ">
-                    <div class="h3 text-center mb-3">
-                        <span>
-                            Moje objednávky
-                        </span>
-                        
-                    </div>
-                    <div >
-                        {% for index, order in orders %}
-                        <div class="card">
-                            <div class="card-header bg-dark " id="heading-{{index}}">
-                              <h2 class="mb-0">
-                                
-                                <button class="btn btn-block text-left text-light" type="button" data-toggle="collapse" data-target="#collapse-{{index}}" aria-expanded="false" aria-controls="collapse-{{index}}">
-                                    <div class="row font-weight-bold h5">
-                                        <div class="col-md">
-                                            <span> Objednávka č. {{index + 1}}</span>
-                                        </div>
-                                        <div class="col-md-5 text-right">
-                                            {{ order.date.strftime("%d.%m.%Y - %H:%M:%S")}}
-                                        </div>
-                                        
-                                    </div>
-                                </button>
-                              </h2>
-                            </div>
-                            <div id="collapse-{{index}}" class="collapse" aria-labelledby="heading-{{index}}" >
-                              <div class="card-body">
-                                  <table>     
-                                        {% for book in order.books %}
-                                        <div class="row mt-2 border-bottom">
-                                            <div class="col-sm-10">
-                                                {{ book.title }}
-                                            </div>
-                                            <div class="col-sm-2 text-right">
-                                                {{ book.price }} €
-                                            </div>
-                                        </div>
-                                            <!-- <tr>
-                                                <td></td>
-                                                <td></td>
-                                            </tr> -->
-                                        {% endfor %}
-                                  </table>
-                              </div>
-                            </div>
-                          </div>
-                          {% endfor %}
-
-                    </div>
-                </div>
-            </div>
         </div>
+        
 
         <div class="row empty">
             <div class="col mt-5 p-5">

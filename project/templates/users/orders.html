@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+{% block content %}
+
+    <div class="row">
+
+        <div class="col-md-12 p-5">
+            <div class="col-md ">
+                <div class="h1 text-center mb-5">
+                    <span>
+                        Moje objednávky
+                    </span>
+                    
+                </div>
+                <div >
+                    
+                    {% for index, order in orders %}
+                    <div class="card">
+                        <div class="card-header bg-dark " id="heading-{{index}}">
+                        <h2 class="mb-0">
+                            
+                            <button class="btn btn-block text-left text-light" type="button" data-toggle="collapse" data-target="#collapse-{{index}}" aria-expanded="false" aria-controls="collapse-{{index}}">
+                                <div class="row font-weight-bold h5">
+                                    <div class="col-md">
+                                        <span> Objednávka č. {{ num - index }}</span>
+                                    </div>
+                                    <div class="col-md-5 text-right text-muted">
+                                        {{ order.date.strftime("%d.%m.%Y - %H:%M:%S")}}
+                                    </div>
+
+                                    <div class="col-md-3 text-right text-warning">
+                                        {{ round(order.total_price, 2)}} €
+                                    </div>
+                                    
+                                </div>
+                            </button>
+                        </h2>
+                        </div>
+                        <div id="collapse-{{index}}" class="collapse bg-light" aria-labelledby="heading-{{index}}" >
+                        <div class="card-body  ml-5">
+                            <table>     
+                                    {% for book in order.books %}
+                                    <div class="row mt-2 border-bottom text-left h5">
+                                        <div class="col-sm">
+                                            {{ book.title }}
+                                        </div>
+                                        <!-- <div class="col-sm-2 text-right">
+                                            {{ book.price }} €
+                                        </div> -->
+                                    </div>
+                                        <!-- <tr>
+                                            <td></td>
+                                            <td></td>
+                                        </tr> -->
+                                    {% endfor %}
+                            </table>
+                        </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

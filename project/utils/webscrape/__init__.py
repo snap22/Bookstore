@@ -4,6 +4,7 @@ from project.users.admin.forms import NewBookForm
 import unicodedata
 from flask import flash
 
+#trieda ktora vyhladava knihy a ich dalsie linky v danom urlku
 class SearchScrape:
     def __init__(self, url="https://www.pantarhei.sk/vsetky-produkty?q="):
         self.url = url
@@ -42,11 +43,12 @@ class SearchInfo:
     def __repr__(self):
         return self.info
 
+#trieda sluzi na najdenie a vygenerovanie dat ohladom danej knihy, a ak sa nieco nenajde tak zada prednastavene hodnoty v konstruktore
 class BookInfoGenerator:
     def __init__(self):
         self.info_holder = None
         self.pages_num = 666
-        self.isbn = 1234567890
+        self.isbn = "1234567890"
         self.language = "Slovenský"
         self.publisher = "Neuvedený"
         self.genre = "Neuvedený"
@@ -67,7 +69,9 @@ class BookInfoGenerator:
         clean_text = unicodedata.normalize("NFKD", found_price)
         self.price = clean_text.strip().split(":")[1][-7:-1]
 
-        self.info = section.find("div", class_="about nlabout").find("span").next_sibling
+        self.info = section.find("div", class_="about nlabout").get_text()
+        if "O knihe:" in self.info:
+            self.info = self.info.split("O knihe:")[1]
 
         book_info = section.find("div", class_="bookInfo")
         s = book_info.find_all("span", class_="highlight")
@@ -88,6 +92,7 @@ class BookInfoGenerator:
         self.publisher = book_info.find("a").get_text()
 
 
+    #vyplni formular na zaklade najdenych informacii
     def fill_in_form(self, form):
         if isinstance(form, NewBookForm) == False:
             return
